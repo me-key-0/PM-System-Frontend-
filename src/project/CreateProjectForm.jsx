@@ -18,14 +18,32 @@ import {
 import { tags } from "@/projectList/ProjectList";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 const CreateProjectForm = () => {
+  const filteredTags = tags.filter((tag) => tag != "all");
+  const [availableTags, setAvailableTags] = useState(filteredTags);
+
+  const handleTagsChange = (newValue) => {
+    let selectedTags = form.getValues("tags");
+
+    if (selectedTags.includes(newValue)) {
+      selectedTags = selectedTags.filter((tag) => tag != newValue);
+      setAvailableTags([...availableTags, newValue]);
+    } else {
+      selectedTags = [...selectedTags, newValue];
+      setAvailableTags(availableTags.filter((tag) => tag != newValue));
+    }
+
+    form.setValue("tags", selectedTags);
+  };
+
   const form = useForm({
     defaultValues: {
       name: "",
       description: "",
       category: "",
-      tags: ["javascript, react"],
+      tags: [],
     },
   });
 
@@ -105,9 +123,9 @@ const CreateProjectForm = () => {
               <FormItem>
                 <FormControl>
                   <Select
-                    // value={field.value}
+                    value=""
                     onValueChange={(value) => {
-                      field.onChange(value);
+                      handleTagsChange(value);
                     }}
                     className="border w-full border-gray-700 py-5 px-5"
                   >
@@ -115,8 +133,8 @@ const CreateProjectForm = () => {
                       <SelectValue placeholder="tags" />
                     </SelectTrigger>
                     <SelectContent>
-                      {tags.map((item) => (
-                        <SelectItem key={item} value={item}>
+                      {availableTags.map((item) => (
+                        <SelectItem key={item} value={item} placeholder="tags">
                           {item}
                         </SelectItem>
                       ))}
@@ -130,7 +148,9 @@ const CreateProjectForm = () => {
                       onClick={() => handleTagsChange(item)}
                       className="cursor-pointer rounded-full flex border items-center py-1 gap-2 px-4"
                     >
-                      <span className="text-sm">django</span>
+                      <span key={item} className="text-sm">
+                        {item}
+                      </span>
                       <Cross1Icon className="h-3 w-3" />
                     </div>
                   ))}
@@ -139,19 +159,11 @@ const CreateProjectForm = () => {
               </FormItem>
             )}
           />
+
           <DialogClose>
-            {false ? (
-              <div>
-                <p>
-                  You can only create 3 projects with free plan, upgrade your
-                  subscription for more.
-                </p>
-              </div>
-            ) : (
-              <Button type="submit" className="w-full my-5">
-                Create Project
-              </Button>
-            )}
+            <Button type="submit" className="w-full my-5">
+              Create Project
+            </Button>
           </DialogClose>
         </form>
       </Form>
