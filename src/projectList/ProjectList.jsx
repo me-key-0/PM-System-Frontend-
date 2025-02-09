@@ -125,7 +125,9 @@ const ProjectList = () => {
             <div className="space-y-5 min-h-[74vh]">
               {keyword
                 ? [1, 1, 1].map((item) => <ProjectCard key={item} />)
-                : [1, 1, 1, 3].map((item) => <ProjectCard key={item} />)}
+                : [1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5].map(
+                    (item) => <ProjectCard key={item} />
+                  )}
             </div>
           </div>
         </section>
