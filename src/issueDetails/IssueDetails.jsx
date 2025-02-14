@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
 const IssueDetails = () => {
-  const { projectId, issueId } = useParams();
+  const { issueId } = useParams();
   return (
     <div className="px-20 py-8 text-gray-400">
       <div className="flex justify-between border p-10 rounded-lg">
@@ -110,7 +110,7 @@ const IssueDetails = () => {
                 <div className="flex items-center gap-10">
                   <p className="w-[7rem]">Release</p>
                   <div className="flex items-center gap-3">
-                    <p>-</p>
+                    <p>2025-04-12</p>
                   </div>
                 </div>
               </div>

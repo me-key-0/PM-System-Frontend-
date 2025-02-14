@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -50,6 +51,7 @@ const Navbar = () => {
           </DropdownMenuContent>
         </DropdownMenu>
         <p>John Doe</p>
+        <ModeToggle />
       </div>
     </div>
   );
