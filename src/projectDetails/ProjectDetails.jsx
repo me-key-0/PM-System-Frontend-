@@ -13,8 +13,21 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import InviteUserForm from "./InviteUserForm";
 import IssueList from "./IssueList";
 import ChatBox from "./ChatBox";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProjectById } from "@/redux/project/Action";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const ProjectDetails = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { project } = useSelector((store) => store);
+
+  useEffect(() => {
+    dispatch(fetchProjectById(id));
+  }, []);
+
+  console.log("project details:", project.projectDetails);
   const handleProjectInvitation = () => {
     console.log("invited");
   };
@@ -25,22 +38,22 @@ const ProjectDetails = () => {
           <ScrollArea className="h-screen lg:w-[69%] pr-2">
             <div className="text-gray-400 pb-10 w-full">
               <h1 className="text-lg font-semibold pb-5">
-                Create Ecommerce Website
+                {project.projectDetails.name}
               </h1>
               <div className="space-y-5 pb-10 text-sm">
                 <p className="w-full md:max-w-lg lg:max-w-xl ">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                  {project.projectDetails.description}
                 </p>
                 <div className="flex">
                   <p className="w-36">Project Lead: </p>
-                  <p>Zosh</p>
+                  <p>{project.projectDetails.owner.full_name}</p>
                 </div>
                 <div className="flex">
                   <p className="w-36">Members: </p>
                   <div className="flex items-center gap-2">
-                    {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item) => (
-                      <Avatar className="cursor-pointer " key={item}>
-                        <AvatarFallback>Z</AvatarFallback>
+                    {project.projectDetails.team.map((item) => (
+                      <Avatar className="cursor-pointer " key={item.id}>
+                        <AvatarFallback>{item.full_name}</AvatarFallback>
                       </Avatar>
                     ))}
                   </div>
@@ -66,7 +79,7 @@ const ProjectDetails = () => {
                 </div>
                 <div className="flex">
                   <p className="w-36">Category: </p>
-                  <p>fullstack</p>
+                  <p>{project.projectDetails.category}</p>
                 </div>
                 <div className="flex">
                   <p className="w-36">Status: </p>
@@ -77,9 +90,21 @@ const ProjectDetails = () => {
                 Tasks
               </section>
               <div className="lg:flex md:flex gap-3 justify-between py-5">
-                <IssueList status="pending" title="Todo List" />
-                <IssueList status="in_progress" title="In Progress" />
-                <IssueList status="completed" title="Completed" />
+                <IssueList
+                  status="pending"
+                  title="Todo List"
+                  issues={project.projectDetails.issues}
+                />
+                <IssueList
+                  status="in_progress"
+                  title="In Progress"
+                  issues={project.projectDetails.issues}
+                />
+                <IssueList
+                  status="completed"
+                  title="Completed"
+                  issues={project.projectDetails.issues}
+                />
               </div>
             </div>
           </ScrollArea>

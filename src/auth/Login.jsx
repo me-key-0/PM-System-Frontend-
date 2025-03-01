@@ -7,10 +7,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { login } from "@/redux/auth/Action";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const form = useForm({
     defaultValues: {
       email: "",
@@ -19,6 +22,7 @@ const Login = () => {
   });
 
   const onSubmit = (data) => {
+    dispatch(login(data));
     console.log("user logged-in successfully: ", data);
   };
 

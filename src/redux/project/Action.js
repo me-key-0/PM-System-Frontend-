@@ -1,10 +1,14 @@
 import api from "@/config/api";
+import * as actionType from "./ActionType";
 
 export const fetchProjects = (category, tag) => async (dispatch) => {
   dispatch({ type: "FETCH_PROJECTS_REQUEST" });
   try {
     const { data } = await api.get(`/api/projects`, {
       params: { category, tag },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
     });
     dispatch({ type: "FETCH_PROJECTS_SUCCESS", payload: data });
     console.log("all projects", data);
@@ -15,13 +19,21 @@ export const fetchProjects = (category, tag) => async (dispatch) => {
 };
 
 export const fetchProjectById = (id) => async (dispatch) => {
-  dispatch({ type: "FETCH_PROJECT_BY_ID_REQUEST" });
+  dispatch({ type: actionType.FETCH_PROJECT_BY_ID_REQUEST });
   try {
-    const { data } = await api.get(`/api/projects/${id}`);
-    dispatch({ type: "FETCH_PROJECT_BY_ID_SUCCESS", payload: data });
+    const { data } = await api.get(`/api/projects/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    });
+    dispatch({ type: actionType.FETCH_PROJECT_BY_ID_SUCCESS, payload: data });
+
     console.log("project by id", data);
   } catch (error) {
-    dispatch({ type: "FETCH_PROJECT_BY_ID_FAILURE", payload: error.message });
+    dispatch({
+      type: actionType.FETCH_PROJECT_BY_ID_FAILURE,
+      payload: error.message,
+    });
     console.log("error", error);
   }
 };
@@ -29,7 +41,11 @@ export const fetchProjectById = (id) => async (dispatch) => {
 export const createProject = (projectData) => async (dispatch) => {
   dispatch({ type: "CREATE_PROJECT_REQUEST" });
   try {
-    const { data } = await api.post(`/api/projects`, projectData);
+    const { data } = await api.post(`/api/projects`, projectData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    });
     dispatch({ type: "CREATE_PROJECT_SUCCESS", payload: data });
     console.log("project created", data);
   } catch (error) {
@@ -53,7 +69,11 @@ export const updateProject = (id, projectData) => async (dispatch) => {
 export const deleteProject = (id) => async (dispatch) => {
   dispatch({ type: "DELETE_PROJECT_REQUEST" });
   try {
-    const { data } = await api.delete(`/api/projects/${id}`);
+    const { data } = await api.delete(`/api/projects/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    });
     dispatch({ type: "DELETE_PROJECT_SUCCESS", id });
     console.log("project deleted", data);
   } catch (error) {
@@ -67,8 +87,11 @@ export const searchProject = (keyword) => async (dispatch) => {
   try {
     const { data } = await api.get(`/api/projects/search`, {
       params: { keyword },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
     });
-    dispatch({ type: "SEARCH_PROJECT_SUCCESS", payload: data });
+    dispatch({ type: "SEARCH_PROJECTS_SUCCESS", payload: data });
     console.log("project searched", data);
   } catch (error) {
     dispatch({ type: "SEARCH_PROJECT_FAILURE", payload: error.message });

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { DialogClose } from "@/components/ui/dialog";
+
 import {
   Form,
   FormControl,
@@ -19,8 +19,11 @@ import { tags } from "@/projectList/ProjectList";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createProject } from "@/redux/project/Action";
 
 const CreateProjectForm = () => {
+  const dispatch = useDispatch();
   const filteredTags = tags.filter((tag) => tag != "all");
   const [availableTags, setAvailableTags] = useState(filteredTags);
 
@@ -48,6 +51,7 @@ const CreateProjectForm = () => {
   });
 
   const onSubmit = (data) => {
+    dispatch(createProject(data));
     console.log("Create project data", data);
   };
   return (
@@ -160,11 +164,9 @@ const CreateProjectForm = () => {
             )}
           />
 
-          <DialogClose>
-            <Button type="submit" className="w-full my-5">
-              Create Project
-            </Button>
-          </DialogClose>
+          <Button type="submit" className="w-full my-5">
+            Create Project
+          </Button>
         </form>
       </Form>
     </div>

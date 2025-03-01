@@ -13,10 +13,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import CreateProjectForm from "@/project/CreateProjectForm";
+import { logout } from "@/redux/auth/Action";
 import { PersonIcon } from "@radix-ui/react-icons";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const { auth } = useSelector((store) => store);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    console.log("logged out");
+  };
+
   const navigate = useNavigate();
   return (
     <div className="border-b py-4 px-5 flex items-center justify-between">
@@ -47,10 +57,10 @@ const Navbar = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <p>John Doe</p>
+        <p>{auth.user.full_name}</p>
         <ModeToggle />
       </div>
     </div>

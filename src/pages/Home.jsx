@@ -1,5 +1,4 @@
 import ProjectList from "@/projectList/projectList";
-
 const Home = () => {
   return (
     <div>

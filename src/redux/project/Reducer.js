@@ -4,7 +4,7 @@ const initialState = {
   projects: [],
   loading: false,
   error: null,
-  projectDetails: null,
+  projectDetails: {},
   searchProjects: [],
 };
 

@@ -5,11 +5,15 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ProjectCard from "@/project/ProjectCard";
+import { searchProject } from "@/redux/project/Action";
+
 import {
   MagnifyingGlassIcon,
   MixerHorizontalIcon,
 } from "@radix-ui/react-icons";
+
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export const tags = [
   "all",
@@ -25,6 +29,11 @@ export const tags = [
 ];
 
 const ProjectList = () => {
+  const dispatch = useDispatch();
+  const { project } = useSelector((store) => store);
+  console.log("prjs.........", project.projects);
+  console.log("searchedPrjs----", project.searchProjects);
+
   const [keyword, setKeyword] = useState("");
 
   const handleFilterChange = (section, value) => {
@@ -33,6 +42,7 @@ const ProjectList = () => {
 
   const handleSearchChange = (e) => {
     setKeyword(e.target.value);
+    dispatch(searchProject(keyword));
   };
 
   return (
@@ -124,10 +134,12 @@ const ProjectList = () => {
           <div>
             <div className="space-y-5 min-h-[74vh]">
               {keyword
-                ? [1, 1, 1].map((item) => <ProjectCard key={item} />)
-                : [1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5].map(
-                    (item) => <ProjectCard key={item} />
-                  )}
+                ? project.searchProjects.map((item) => (
+                    <ProjectCard key={item} project={item} />
+                  ))
+                : project.projects.map((item) => (
+                    <ProjectCard key={item} project={item} />
+                  ))}
             </div>
           </div>
         </section>

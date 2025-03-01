@@ -21,7 +21,7 @@ const AuthReducer = (state = initialState, action) => {
         jwt: action.payload.jwt,
       };
     case "GET_USER_SUCCESS":
-      return { ...state, loading: false, user: action.payload.user };
+      return { ...state, loading: false, user: action.payload };
     case "LOGOUT_REQUEST":
       return initialState;
     default:
